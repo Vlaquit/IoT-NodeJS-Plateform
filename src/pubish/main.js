@@ -6,12 +6,18 @@ const redis = require("redis");
 function run() {
 
     // getting queue name from routingdb
-    let queue_name = routingdb.routingdb[0];
+    let queue_name = "from_processing";
 
     const REDISIP = process.env.REDISIP || "127.0.0.1";
     const REDISpassword = process.env.REDISpassword || 'guest';
 
     const client = redis.createClient({host:REDISIP,password:REDISpassword});
+
+    // Pour les besoins du tp ceci initialise la db :
+
+    client.lpush("ESEO",'{"date":0,"value":0,"from":"eseo"}');
+    client.lpush("ENSAM",'{"date":0,"value":0,"from":"ensam"}');
+    client.lpush("MAIRIE",'{"date":0,"value":0,"from":"mairie"}');
 
     client.on("error", function(error) {
         console.error("ERROR",error);
@@ -41,9 +47,14 @@ function run() {
             channel.consume(queue_name, function(msg) {
                 console.log(" [x] Received %s", msg.content.toString());
                 msg = JSON.parse(msg.content.toString());
-                // Now update Redis DB (and set there the city upper case)
-                client.set(msg.city.toUpperCase(), msg.temperature);
+                console.log(" [x] Publishing to %s", msg.from.toUpperCase());
+                console.log(" [x] Msg is %s", JSON.stringify(msg));
 
+                // Now update Redis DB
+                client.lpush(msg.from.toUpperCase(), JSON.stringify(msg));
+                client.lrange(msg.from.toUpperCase(), 0, 10, (err, items) => {
+                    console.log(items);
+                });
             }, { noAck: true });
         });
     });

@@ -1,7 +1,7 @@
 const post = require("../src/post");
 
 let login = "eseo";
-let password = "pass1";
+let password = "pass";
 
 
 /**
@@ -32,7 +32,8 @@ var iter_data = 0;
  */
 function action(jwt, date, value) {
     iter_data++;
-    post.POST({jwt:jwt,data:{date:date,value:value}},"/postdata",d => {
+    post.POST({jwt:jwt,data:{date:date,value:value,from:"eseo"}},"/postdata",d => {
+        console.log(jwt)
         post.POST({jwt:jwt},"/pull", d => {
             apply_command(d);
         });
@@ -46,14 +47,14 @@ post.POST({username: login,password: password},"/login",d => {
     var value = 0;
 
     setInterval(() => {
-            let date = new Date();
+            let date = Date.now();
             let randomError = Math.floor(Math.random() * Math.floor(10));
             if (randomError==10){
                 let erronedValue = value-Math.floor(Math.random() * Math.floor(10));
-                action(jwt, date.getDate(), erronedValue);
+                action(jwt, date, erronedValue);
             } else {
                 value = value + Math.floor(Math.random() * Math.floor(10));
-                action(jwt, date.getDate(), value);
+                action(jwt, date, value);
             }
         },
         10000);

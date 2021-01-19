@@ -13,8 +13,8 @@ const host = 'localhost'; // Use 0.0.0.0 to be visible from ouside local machine
 const port = 8000;
 const queue = 'from_server';
 
-const ACCESS_TOKEN_SECRET = "123456789";
-const ACCESS_TOKEN_LIFE = 120;
+const ACCESS_TOKEN_SECRET = "secret";
+const ACCESS_TOKEN_LIFE = 999999;
 
 function check_password(login,password) {
     // Check password against authdb
@@ -101,6 +101,7 @@ function pull(data,res) {
         // Check JWT validity
         jwt.verify(data.jwt, ACCESS_TOKEN_SECRET, function(err, decoded) {
             if (err) { // There is an error: invalid jwt ...
+                console.log(data.jwt);
                 res.writeHead(401, {'Content-Type': 'application/json'});
                 // Send back reply content
                 res.end(JSON.stringify({"error":-1,"message":"JWT error"}));

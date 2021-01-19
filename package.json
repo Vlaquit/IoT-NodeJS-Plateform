@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "node bin/server.js",
+    "eseo": "node bin/eseo.js",
+    "ensam": "node bin/ensam.js",
+    "mairie": "node bin/mairie.js",
+    "publish": "node bin/publish.js",
+    "processing": "node bin/processing.js"
   },
   "keywords": [],
   "author": "",
