@@ -9,7 +9,9 @@
     "ensam": "node bin/ensam.js",
     "mairie": "node bin/mairie.js",
     "publish": "node bin/publish.js",
-    "processing": "node bin/processing.js"
+    "processing": "node bin/processing.js",
+    "rest": "node bin/rest.js"
+
   },
   "keywords": [],
   "author": "",
@@ -17,6 +19,7 @@
   "devDependencies": {
     "argparse": "^2.0.1",
     "dotenv": "^8.2.0",
+    "ioredis": "^4.19.4",
     "jsonschema": "^1.4.0",
     "jsonwebtoken": "^8.5.1"
   },
